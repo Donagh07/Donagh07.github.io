@@ -39,6 +39,8 @@
             background-color: var(--white);
             color: var(--dark);
             line-height: 1.6;
+            position: relative;
+            padding-bottom: 120px;
         }
 
         /* Header Styles */
@@ -197,6 +199,8 @@
         .trial-chatbots {
             padding: 100px 20px;
             background-color: var(--light);
+            position: relative;
+            z-index: 1001;
         }
 
         .chatbots-container {
@@ -218,6 +222,8 @@
             flex-direction: column;
             overflow: hidden;
             border: 1px solid var(--border);
+            position: relative;
+            z-index: 1002;
         }
 
         .chatbot-header {
@@ -390,6 +396,8 @@
         .integrations {
             padding: 100px 20px;
             background-color: var(--white);
+            position: relative;
+            z-index: 1001;
         }
 
         .integrations-container {
@@ -410,6 +418,9 @@
             box-shadow: var(--shadow);
             transition: all 0.3s;
             border: 1px solid var(--border);
+            position: relative;
+            z-index: 1002;
+            cursor: pointer;
         }
 
         .integration-card:hover {
@@ -925,6 +936,27 @@
             opacity: 0.9;
         }
 
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-container {
@@ -1076,7 +1108,7 @@
         </div>
         <div class="chatbots-container">
             <!-- Gym Chatbot (Blue) -->
-            <div class="chatbot-trial">
+            <div class="chatbot-trial" id="gym-chatbot">
                 <div class="chatbot-header gym-header">
                     <div class="trial-logo gym-logo-bg">
                         <i class="fas fa-dumbbell"></i>
@@ -1086,7 +1118,7 @@
                         <p>How can I help with your fitness journey?</p>
                     </div>
                 </div>
-                <div class="chatbot-body">
+                <div class="chatbot-body" id="gym-chat-messages">
                     <div class="message bot-message">
                         Hi there! 👋 I'm your virtual assistant from Elite Fitness Center. How can I help you today?
                     </div>
@@ -1101,8 +1133,8 @@
                     </div>
                 </div>
                 <div class="chatbot-footer">
-                    <input type="text" class="trial-input" placeholder="Type your message...">
-                    <button class="trial-send-btn">
+                    <input type="text" class="trial-input" placeholder="Type your message..." id="gym-user-input">
+                    <button class="trial-send-btn" id="gym-send-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -1112,7 +1144,7 @@
             </div>
 
             <!-- Restaurant Chatbot (Red) -->
-            <div class="chatbot-trial">
+            <div class="chatbot-trial" id="restaurant-chatbot">
                 <div class="chatbot-header restaurant-header">
                     <div class="trial-logo restaurant-logo-bg">
                         <i class="fas fa-utensils"></i>
@@ -1122,7 +1154,7 @@
                         <p>Hungry? Let me help with your order!</p>
                     </div>
                 </div>
-                <div class="chatbot-body">
+                <div class="chatbot-body" id="restaurant-chat-messages">
                     <div class="message bot-message">
                         Hello! 👋 Welcome to Gourmet Delight. How can I assist you today?
                     </div>
@@ -1137,8 +1169,8 @@
                     </div>
                 </div>
                 <div class="chatbot-footer">
-                    <input type="text" class="trial-input" placeholder="Type your message...">
-                    <button class="trial-send-btn">
+                    <input type="text" class="trial-input" placeholder="Type your message..." id="restaurant-user-input">
+                    <button class="trial-send-btn" id="restaurant-send-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -1148,7 +1180,7 @@
             </div>
 
             <!-- E-commerce Chatbot (White) -->
-            <div class="chatbot-trial">
+            <div class="chatbot-trial" id="techbot-chatbot">
                 <div class="chatbot-header ecommerce-header">
                     <div class="trial-logo ecommerce-logo-bg">
                         <i class="fas fa-shopping-cart"></i>
@@ -1158,7 +1190,7 @@
                         <p>Ready to find your perfect gadget?</p>
                     </div>
                 </div>
-                <div class="chatbot-body">
+                <div class="chatbot-body" id="techbot-chat-messages">
                     <div class="message bot-message">
                         Hi! 👋 I'm your shopping assistant at TechGadgets. How can I help?
                     </div>
@@ -1173,8 +1205,8 @@
                     </div>
                 </div>
                 <div class="chatbot-footer">
-                    <input type="text" class="trial-input" placeholder="Type your message...">
-                    <button class="trial-send-btn">
+                    <input type="text" class="trial-input" placeholder="Type your message..." id="techbot-user-input">
+                    <button class="trial-send-btn" id="techbot-send-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -1210,7 +1242,7 @@
                 </div>
                 <h3>WhatsApp</h3>
             </div>
-            <div class="integration-card">
+            <div class="integration-card" id="telegram-card">
                 <div class="integration-icon">
                     <i class="fab fa-telegram"></i>
                 </div>
@@ -1405,13 +1437,19 @@
         </div>
     </div>
 
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Webhook URL for chatbot messages
-            const chatbotWebhookUrl = 'https://myn8n.vaprofessional.co.uk/webhook/61154903-e59d-44d8-a47e-4b751bb6ac54';
-            
-            // Webhook URL for contact form
-            const contactFormWebhookUrl = 'https://myn8n.vaprofessional.co.uk/webhook/contact-form-submission';
+            // Webhook URLs
+            const webhooks = {
+                gym: 'https://myn8n.vaprofessional.co.uk/webhook/b9604743-1ff4-4392-adc7-d42115b35462',
+                restaurant: 'https://myn8n.vaprofessional.co.uk/webhook/4c523445-1ae6-4e4c-b6a4-2c6ba89813ee',
+                techbot: 'https://myn8n.vaprofessional.co.uk/webhook/63f33a9e-3c90-4065-9193-a778aec832b8',
+                main: 'https://myn8n.vaprofessional.co.uk/webhook/83a22471-116e-45e7-8c4d-c38028d5d412',
+                contact: 'https://myn8n.vaprofessional.co.uk/webhook/00e1245b-c655-4315-a4f8-0c7679bd62df'
+            };
             
             // Chatbot toggle functionality
             const chatContainer = document.getElementById('au-chatbot');
@@ -1420,6 +1458,25 @@
             const sendBtn = document.getElementById('au-send-btn');
             const userInput = document.getElementById('au-user-input');
             const chatMessages = document.getElementById('au-chat-messages');
+            
+            // Demo chatbots
+            const gymChatbot = {
+                input: document.getElementById('gym-user-input'),
+                sendBtn: document.getElementById('gym-send-btn'),
+                messages: document.getElementById('gym-chat-messages')
+            };
+            
+            const restaurantChatbot = {
+                input: document.getElementById('restaurant-user-input'),
+                sendBtn: document.getElementById('restaurant-send-btn'),
+                messages: document.getElementById('restaurant-chat-messages')
+            };
+            
+            const techbotChatbot = {
+                input: document.getElementById('techbot-user-input'),
+                sendBtn: document.getElementById('techbot-send-btn'),
+                messages: document.getElementById('techbot-chat-messages')
+            };
             
             // Modal elements
             const privacyModal = document.getElementById('privacyModal');
@@ -1431,88 +1488,119 @@
             // Contact form
             const contactForm = document.getElementById('contactForm');
             
+            // Toast notification
+            const toast = document.getElementById('toast');
+            
+            // Telegram card
+            const telegramCard = document.getElementById('telegram-card');
+            
             // Toggle chat visibility
             toggleChat.addEventListener('click', function() {
                 chatContainer.classList.toggle('active');
-                toggleChat.classList.toggle('hidden');
             });
             
             // Close chat
             closeBtn.addEventListener('click', function() {
                 chatContainer.classList.remove('active');
-                toggleChat.classList.remove('hidden');
             });
             
-            // Send message to webhook
-            async function sendToWebhook(message) {
-                try {
-                    const response = await fetch(chatbotWebhookUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ message: message })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`Webhook error: ${response.status}`);
-                    }
-                    
-                    return await response.json();
-                } catch (error) {
-                    console.error('Error sending message to webhook:', error);
-                    return { response: "Sorry, I'm having trouble connecting. Please try again later." };
-                }
-            }
-            
-            // Send message
-            async function sendMessage() {
-                const message = userInput.value.trim();
-                if (message) {
-                    // Add user message
-                    addMessage(message, 'user');
-                    userInput.value = '';
-                    
-                    // Show typing indicator
-                    showTypingIndicator();
-                    
-                    try {
-                        // Send to webhook and get response
-                        const data = await sendToWebhook(message);
-                        
-                        // Remove typing indicator
-                        removeTypingIndicator();
-                        
-                        // Add bot response
-                        addMessage(data.response || "Thanks for your message! How else can I assist you?", 'bot');
-                    } catch (error) {
-                        removeTypingIndicator();
-                        addMessage("Sorry, I encountered an error. Please try again.", 'bot');
-                    }
-                }
-            }
-            
-            // Send button click
-            sendBtn.addEventListener('click', sendMessage);
-            
-            // Enter key press
-            userInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
+            // Telegram card click handler
+            telegramCard.addEventListener('click', function() {
+                showToast('Telegram integration demo activated!');
             });
+            
+            // Show toast notification
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Generic function to handle chatbot interactions
+            function setupChatbot(chatbot, webhookUrl) {
+                const input = chatbot.input;
+                const sendBtn = chatbot.sendBtn;
+                const messages = chatbot.messages;
+                
+                // Send message
+                async function sendMessage() {
+                    const message = input.value.trim();
+                    if (message) {
+                        // Add user message
+                        addMessage(message, 'user', messages);
+                        input.value = '';
+                        
+                        // Show typing indicator
+                        showTypingIndicator(messages);
+                        
+                        try {
+                            // Send to webhook and get response
+                            const response = await fetch(webhookUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ message })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            // Remove typing indicator
+                            removeTypingIndicator(messages);
+                            
+                            // Add bot response
+                            addMessage(data.response || "Thanks for your message! How else can I assist you?", 'bot', messages);
+                        } catch (error) {
+                            removeTypingIndicator(messages);
+                            addMessage("Sorry, I encountered an error. Please try again.", 'bot', messages);
+                        }
+                    }
+                }
+                
+                // Send button click
+                sendBtn.addEventListener('click', sendMessage);
+                
+                // Enter key press
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+                
+                // Quick reply simulation
+                messages.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('quick-reply')) {
+                        input.value = e.target.textContent;
+                        sendMessage();
+                    }
+                });
+            }
+            
+            // Initialize all chatbots
+            setupChatbot({
+                input: userInput,
+                sendBtn: sendBtn,
+                messages: chatMessages
+            }, webhooks.main);
+            
+            setupChatbot(gymChatbot, webhooks.gym);
+            setupChatbot(restaurantChatbot, webhooks.restaurant);
+            setupChatbot(techbotChatbot, webhooks.techbot);
             
             // Add message to chat
-            function addMessage(text, sender) {
+            function addMessage(text, sender, container) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message', `${sender}-message`);
                 messageDiv.textContent = text;
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                container.appendChild(messageDiv);
+                container.scrollTop = container.scrollHeight;
             }
             
             // Show typing indicator
-            function showTypingIndicator() {
+            function showTypingIndicator(container) {
                 const typingDiv = document.createElement('div');
                 typingDiv.classList.add('typing-indicator');
                 typingDiv.id = 'typing-indicator';
@@ -1521,25 +1609,17 @@
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
                 `;
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                container.appendChild(typingDiv);
+                container.scrollTop = container.scrollHeight;
             }
             
             // Remove typing indicator
-            function removeTypingIndicator() {
-                const typingIndicator = document.getElementById('typing-indicator');
+            function removeTypingIndicator(container) {
+                const typingIndicator = container.querySelector('#typing-indicator');
                 if (typingIndicator) {
                     typingIndicator.remove();
                 }
             }
-            
-            // Quick reply simulation
-            chatMessages.addEventListener('click', function(e) {
-                if (e.target.classList.contains('quick-reply')) {
-                    userInput.value = e.target.textContent;
-                    sendMessage();
-                }
-            });
             
             // Modal functionality
             privacyLink.addEventListener('click', function(e) {
@@ -1581,7 +1661,7 @@
                 };
                 
                 try {
-                    const response = await fetch(contactFormWebhookUrl, {
+                    const response = await fetch(webhooks.contact, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1590,14 +1670,14 @@
                     });
                     
                     if (response.ok) {
-                        alert('Thank you for your message! We will get back to you soon.');
+                        showToast('Thank you for your message! We will get back to you soon.');
                         contactForm.reset();
                     } else {
                         throw new Error('Form submission failed');
                     }
                 } catch (error) {
                     console.error('Error submitting form:', error);
-                    alert('There was an error sending your message. Please try again.');
+                    showToast('There was an error sending your message. Please try again.');
                 }
             });
         });
