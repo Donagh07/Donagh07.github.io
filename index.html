@@ -571,48 +571,6 @@
             background: var(--primary-dark);
         }
 
-        /* Dashboard Preview */
-        .dashboard-preview {
-            background: var(--primary);
-            padding: 100px 20px;
-            color: white;
-            text-align: center;
-        }
-
-        .dashboard-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .dashboard-content h2 {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .dashboard-content p {
-            font-size: 20px;
-            max-width: 800px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
-
-        .dashboard-image {
-            width: 100%;
-            max-width: 900px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .dashboard-image img {
-            width: 100%;
-            display: block;
-        }
-
         /* Footer */
         footer {
             background: var(--dark);
@@ -1110,18 +1068,6 @@
         </div>
     </section>
 
-    <!-- Dashboard Preview Section -->
-    <section class="dashboard-preview">
-        <div class="dashboard-content">
-            <h2>Your Customized Dashboard</h2>
-            <p>Monitor performance, track conversations, and gain insights with your personalized analytics dashboard</p>
-            
-            <div class="dashboard-image">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" alt="Customized Dashboard">
-            </div>
-        </div>
-    </section>
-
     <!-- Trial Chatbots Section -->
     <section class="trial-chatbots">
         <div class="section-header">
@@ -1187,6 +1133,42 @@
                             <div class="quick-reply">View menu</div>
                             <div class="quick-reply">Special offers</div>
                             <div class="quick-reply">Opening hours</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="trial-input" placeholder="Type your message...">
+                    <button class="trial-send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="https://www.ArtificialUtility.com" target="_blank">ArtificialUtility.com</a>
+                </div>
+            </div>
+
+            <!-- E-commerce Chatbot (White) -->
+            <div class="chatbot-trial">
+                <div class="chatbot-header ecommerce-header">
+                    <div class="trial-logo ecommerce-logo-bg">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="trial-header-text">
+                        <h3>TechGadgets Store</h3>
+                        <p>Ready to find your perfect gadget?</p>
+                    </div>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Hi! 👋 I'm your shopping assistant at TechGadgets. How can I help?
+                    </div>
+                    <div class="message bot-message">
+                        I can assist with:
+                        <div class="quick-replies">
+                            <div class="quick-reply">Product recommendations</div>
+                            <div class="quick-reply">Order status</div>
+                            <div class="quick-reply">Return policy</div>
+                            <div class="quick-reply">Special deals</div>
                         </div>
                     </div>
                 </div>
