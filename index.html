@@ -48,12 +48,33 @@
         
         .chatbot-wrapper {
             position: relative;
-            height: 70px; /* Height of collapsed state */
-            transition: height 0.4s ease;
+            display: flex;
+            justify-content: flex-end;
+            min-height: 70px; /* Height of toggle button */
         }
-        
-        .chatbot-wrapper.expanded {
-            height: 570px; /* Height of expanded state (500px chat + 70px button) */
+
+        .chatbot-container {
+            width: 380px;
+            height: 500px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: absolute;
+            right: 70px; /* Position to left of toggle button */
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid #dee2e6;
+            transform: translateX(20px);
+        }
+
+        .chatbot-wrapper.expanded .chatbot-container {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
         }
 
         .toggle-chat {
@@ -69,37 +90,12 @@
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
             z-index: 2;
         }
 
         .toggle-chat:hover {
-            transform: translateX(-50%) scale(1.05) rotate(5deg);
-        }
-
-        .chatbot-container {
-            width: 100%;
-            height: 500px;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            position: absolute;
-            bottom: 70px;
-            opacity: 0;
-            pointer-events: none;
-            border: 1px solid #dee2e6;
-        }
-
-        .chatbot-wrapper.expanded .chatbot-container {
-            opacity: 1;
-            pointer-events: all;
+            transform: scale(1.05) rotate(5deg);
         }
 
         .chatbot-header {
@@ -338,6 +334,11 @@
                 height: 60px;
                 font-size: 24px;
             }
+            
+            .chatbot-container {
+                width: calc(100vw - 90px);
+                right: 60px;
+            }
         }
     </style>
 </head>
@@ -355,8 +356,8 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 1</h3>
-                        <p>Customer Support</p>
+                        <h3>Support Bot</h3>
+                        <p>Customer Service</p>
                     </div>
                     <button class="close-btn">
                         <i class="fas fa-times"></i>
@@ -398,8 +399,8 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 2</h3>
-                        <p>Restaurant Booking</p>
+                        <h3>Restaurant Bot</h3>
+                        <p>Dining Assistant</p>
                     </div>
                     <button class="close-btn">
                         <i class="fas fa-times"></i>
@@ -441,7 +442,7 @@
                         <i class="fas fa-shopping-cart"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 3</h3>
+                        <h3>Shop Bot</h3>
                         <p>E-commerce Assistant</p>
                     </div>
                     <button class="close-btn">
@@ -484,8 +485,8 @@
                         <i class="fas fa-hotel"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 4</h3>
-                        <p>Hotel Booking</p>
+                        <h3>Hotel Bot</h3>
+                        <p>Booking Assistant</p>
                     </div>
                     <button class="close-btn">
                         <i class="fas fa-times"></i>
@@ -527,8 +528,8 @@
                         <i class="fas fa-heartbeat"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 5</h3>
-                        <p>Health Assistant</p>
+                        <h3>Health Bot</h3>
+                        <p>Medical Assistant</p>
                     </div>
                     <button class="close-btn">
                         <i class="fas fa-times"></i>
@@ -570,8 +571,8 @@
                         <i class="fas fa-plane"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 6</h3>
-                        <p>Travel Assistant</p>
+                        <h3>Travel Bot</h3>
+                        <p>Booking Assistant</p>
                     </div>
                     <button class="close-btn">
                         <i class="fas fa-times"></i>
@@ -613,8 +614,8 @@
                         <i class="fas fa-graduation-cap"></i>
                     </div>
                     <div class="header-text">
-                        <h3>Chatbot 7</h3>
-                        <p>Education Advisor</p>
+                        <h3>Edu Bot</h3>
+                        <p>Learning Assistant</p>
                     </div>
                     <button class="close-btn">
                         <i class="fas fa-times"></i>
@@ -656,8 +657,8 @@
                         <i class="fas fa-coins"></i>
                     </div>
                     <div class="header-text">
-                        <h3 style="color: #2d3436;">Chatbot 8</h3>
-                        <p style="color: #2d3436;">Financial Advisor</p>
+                        <h3 style="color: #2d3436;">Finance Bot</h3>
+                        <p style="color: #2d3436;">Money Assistant</p>
                     </div>
                     <button class="close-btn" style="color: #2d3436;">
                         <i class="fas fa-times"></i>
@@ -669,7 +670,7 @@
                     </div>
                     <div class="message bot-message">
                         I can assist with:
-                        <div class="quick-replies" style="background: #fdcb6e; color: #2d3436;">
+                        <div class="quick-replies">
                             <div class="quick-reply" style="background: #fdcb6e; color: #2d3436;">Investments</div>
                             <div class="quick-reply" style="background: #fdcb6e; color: #2d3436;">Savings</div>
                             <div class="quick-reply" style="background: #fdcb6e; color: #2d3436;">Budgeting</div>
@@ -699,8 +700,8 @@
                         <i class="fas fa-dumbbell"></i>
                     </div>
                     <div class="header-text">
-                        <h3 style="color: #2d3436;">Chatbot 9</h3>
-                        <p style="color: #2d3436;">Fitness Coach</p>
+                        <h3 style="color: #2d3436;">Fitness Bot</h3>
+                        <p style="color: #2d3436;">Workout Assistant</p>
                     </div>
                     <button class="close-btn" style="color: #2d3436;">
                         <i class="fas fa-times"></i>
