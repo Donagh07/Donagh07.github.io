@@ -17,9 +17,6 @@
             background-color: #ffffff;
             color: #333;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 40px 20px;
         }
         
@@ -36,14 +33,27 @@
             margin-bottom: 40px;
             text-align: center;
             max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        /* Chatbot Widget Styles */
+        /* Chatbot Grid */
+        .chatbot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
         .chatbot-wrapper {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
+            position: relative;
+            height: 70px; /* Height of collapsed state */
+            transition: height 0.4s ease;
+        }
+        
+        .chatbot-wrapper.expanded {
+            height: 570px; /* Height of expanded state (500px chat + 70px button) */
         }
 
         .toggle-chat {
@@ -61,15 +71,17 @@
             transition: all 0.3s;
             position: absolute;
             bottom: 0;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
         }
 
         .toggle-chat:hover {
-            transform: scale(1.05) rotate(5deg);
+            transform: translateX(-50%) scale(1.05) rotate(5deg);
         }
 
         .chatbot-container {
-            width: 380px;
+            width: 100%;
             height: 500px;
             background: #ffffff;
             border-radius: 20px;
@@ -78,15 +90,14 @@
             flex-direction: column;
             overflow: hidden;
             transition: all 0.4s ease;
-            margin-bottom: 20px;
-            transform: translateY(20px) scale(0.95);
+            position: absolute;
+            bottom: 70px;
             opacity: 0;
             pointer-events: none;
             border: 1px solid #dee2e6;
         }
 
-        .chatbot-container.active {
-            transform: translateY(0) scale(1);
+        .chatbot-wrapper.expanded .chatbot-container {
             opacity: 1;
             pointer-events: all;
         }
@@ -139,6 +150,8 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            position: absolute;
+            right: 20px;
         }
 
         .close-btn:hover {
@@ -305,14 +318,19 @@
             }
         }
 
+        @media (max-width: 1200px) {
+            .chatbot-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 28px;
             }
             
-            .chatbot-container {
-                width: 90vw;
-                max-width: 380px;
+            .chatbot-grid {
+                grid-template-columns: 1fr;
             }
             
             .toggle-chat {
@@ -327,103 +345,451 @@
     <h1>Business Chatbot Widgets</h1>
     <p class="note">Note: These chatbot widgets are for visual purposes only and are not interactive.</p>
     
-    <!-- Chatbot Widget -->
-    <div class="chatbot-wrapper">
-        <div class="chatbot-container" id="au-chatbot">
-            <div class="chatbot-header">
-                <div class="trial-logo">
-                    <i class="fas fa-robot"></i>
+    <!-- Chatbot Grid -->
+    <div class="chatbot-grid">
+        <!-- Chatbot 1 -->
+        <div class="chatbot-wrapper" id="chatbot-1">
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <div class="trial-logo">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 1</h3>
+                        <p>Customer Support</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="header-text">
-                    <h3>ArtificialUtility Assistant</h3>
-                    <p>How can I help you today?</p>
-                </div>
-                <button class="close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chatbot-body" id="au-chat-messages">
-                <div class="message bot-message">
-                    Hello! 👋 I'm your AI assistant from ArtificialUtility. How can I help you with our chatbot solutions?
-                </div>
-                <div class="message bot-message">
-                    You can ask me about:
-                    <div class="quick-replies">
-                        <div class="quick-reply">Pricing plans</div>
-                        <div class="quick-reply">Free trial</div>
-                        <div class="quick-reply">Customization</div>
-                        <div class="quick-reply">Dashboard features</div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Hello! 👋 I'm your customer support assistant. How can I help you today?
+                    </div>
+                    <div class="message bot-message">
+                        You can ask me about:
+                        <div class="quick-replies">
+                            <div class="quick-reply">Account issues</div>
+                            <div class="quick-reply">Billing questions</div>
+                            <div class="quick-reply">Technical support</div>
+                        </div>
                     </div>
                 </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
             </div>
-            <div class="chatbot-footer">
-                <input type="text" class="message-input" placeholder="Type your message..." id="au-user-input">
-                <button class="send-btn" id="au-send-btn">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-            <div class="powered-by">
-                Powered by <a href="https://www.ArtificialUtility.com" target="_blank">ArtificialUtility.com</a>
+            <div class="toggle-chat">
+                <i class="fas fa-comment-dots"></i>
             </div>
         </div>
-        <div class="toggle-chat" id="toggle-chat">
-            <i class="fas fa-comment-dots"></i>
+        
+        <!-- Chatbot 2 -->
+        <div class="chatbot-wrapper" id="chatbot-2">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #ff6b6b;">
+                    <div class="trial-logo" style="background: #ff6b6b;">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 2</h3>
+                        <p>Restaurant Booking</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Welcome to our restaurant! 🍽️ Would you like to make a reservation?
+                    </div>
+                    <div class="message bot-message">
+                        I can help with:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #ff6b6b;">Book a table</div>
+                            <div class="quick-reply" style="background: #ff6b6b;">View menu</div>
+                            <div class="quick-reply" style="background: #ff6b6b;">Special offers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #ff6b6b;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #ff6b6b;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 3 -->
+        <div class="chatbot-wrapper" id="chatbot-3">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #00b894;">
+                    <div class="trial-logo" style="background: #00b894;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 3</h3>
+                        <p>E-commerce Assistant</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Hi there! 👋 Ready to find your perfect product?
+                    </div>
+                    <div class="message bot-message">
+                        Try asking about:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #00b894;">Product search</div>
+                            <div class="quick-reply" style="background: #00b894;">Order status</div>
+                            <div class="quick-reply" style="background: #00b894;">Returns</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #00b894;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #00b894;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 4 -->
+        <div class="chatbot-wrapper" id="chatbot-4">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #6c5ce7;">
+                    <div class="trial-logo" style="background: #6c5ce7;">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 4</h3>
+                        <p>Hotel Booking</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Welcome to our hotel! 🏨 How can I assist with your stay?
+                    </div>
+                    <div class="message bot-message">
+                        I can help with:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #6c5ce7;">Room availability</div>
+                            <div class="quick-reply" style="background: #6c5ce7;">Amenities</div>
+                            <div class="quick-reply" style="background: #6c5ce7;">Local attractions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #6c5ce7;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #6c5ce7;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 5 -->
+        <div class="chatbot-wrapper" id="chatbot-5">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #fd79a8;">
+                    <div class="trial-logo" style="background: #fd79a8;">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 5</h3>
+                        <p>Health Assistant</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Hello! 👋 I'm your health assistant. How can I help today?
+                    </div>
+                    <div class="message bot-message">
+                        Try asking about:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #fd79a8;">Appointments</div>
+                            <div class="quick-reply" style="background: #fd79a8;">Symptoms</div>
+                            <div class="quick-reply" style="background: #fd79a8;">Medications</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #fd79a8;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #fd79a8;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 6 -->
+        <div class="chatbot-wrapper" id="chatbot-6">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #00cec9;">
+                    <div class="trial-logo" style="background: #00cec9;">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 6</h3>
+                        <p>Travel Assistant</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Welcome to TravelBot! ✈️ Where would you like to go?
+                    </div>
+                    <div class="message bot-message">
+                        I can help with:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #00cec9;">Flight bookings</div>
+                            <div class="quick-reply" style="background: #00cec9;">Hotel deals</div>
+                            <div class="quick-reply" style="background: #00cec9;">Travel tips</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #00cec9;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #00cec9;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 7 -->
+        <div class="chatbot-wrapper" id="chatbot-7">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #a29bfe;">
+                    <div class="trial-logo" style="background: #a29bfe;">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Chatbot 7</h3>
+                        <p>Education Advisor</p>
+                    </div>
+                    <button class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Hello student! 📚 How can I assist with your education?
+                    </div>
+                    <div class="message bot-message">
+                        Ask me about:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #a29bfe;">Courses</div>
+                            <div class="quick-reply" style="background: #a29bfe;">Admissions</div>
+                            <div class="quick-reply" style="background: #a29bfe;">Scholarships</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #a29bfe;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #a29bfe;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 8 -->
+        <div class="chatbot-wrapper" id="chatbot-8">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #ffeaa7; color: #2d3436;">
+                    <div class="trial-logo" style="background: #fdcb6e; color: #2d3436;">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3 style="color: #2d3436;">Chatbot 8</h3>
+                        <p style="color: #2d3436;">Financial Advisor</p>
+                    </div>
+                    <button class="close-btn" style="color: #2d3436;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Welcome to FinanceBot! 💰 How can I help with your money?
+                    </div>
+                    <div class="message bot-message">
+                        I can assist with:
+                        <div class="quick-replies" style="background: #fdcb6e; color: #2d3436;">
+                            <div class="quick-reply" style="background: #fdcb6e; color: #2d3436;">Investments</div>
+                            <div class="quick-reply" style="background: #fdcb6e; color: #2d3436;">Savings</div>
+                            <div class="quick-reply" style="background: #fdcb6e; color: #2d3436;">Budgeting</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #fdcb6e; color: #2d3436;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #fdcb6e;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <!-- Chatbot 9 -->
+        <div class="chatbot-wrapper" id="chatbot-9">
+            <div class="chatbot-container">
+                <div class="chatbot-header" style="background: #55efc4; color: #2d3436;">
+                    <div class="trial-logo" style="background: #00b894; color: white;">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3 style="color: #2d3436;">Chatbot 9</h3>
+                        <p style="color: #2d3436;">Fitness Coach</p>
+                    </div>
+                    <button class="close-btn" style="color: #2d3436;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="chatbot-body">
+                    <div class="message bot-message">
+                        Ready to get fit? 💪 How can I help with your workout?
+                    </div>
+                    <div class="message bot-message">
+                        Try asking about:
+                        <div class="quick-replies">
+                            <div class="quick-reply" style="background: #00b894;">Workout plans</div>
+                            <div class="quick-reply" style="background: #00b894;">Nutrition</div>
+                            <div class="quick-reply" style="background: #00b894;">Exercise tips</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="send-btn" style="background: #00b894;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    Powered by <a href="#" target="_blank">BusinessChatbots.com</a>
+                </div>
+            </div>
+            <div class="toggle-chat" style="background: #00b894;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Chatbot toggle functionality
-            const chatContainer = document.getElementById('au-chatbot');
-            const toggleChat = document.getElementById('toggle-chat');
-            const closeBtn = document.querySelector('.close-btn');
-            const sendBtn = document.getElementById('au-send-btn');
-            const userInput = document.getElementById('au-user-input');
-            const chatMessages = document.getElementById('au-chat-messages');
-            
-            // Toggle chat visibility
-            toggleChat.addEventListener('click', function() {
-                chatContainer.classList.toggle('active');
-            });
-            
-            // Close chat
-            closeBtn.addEventListener('click', function() {
-                chatContainer.classList.remove('active');
-            });
-            
-            // Send button click - just for show (not functional)
-            sendBtn.addEventListener('click', function() {
-                const message = userInput.value.trim();
-                if (message) {
-                    // Add user message
-                    addMessage(message, 'user', chatMessages);
-                    userInput.value = '';
-                    
-                    // Show typing indicator
-                    showTypingIndicator(chatMessages);
-                    
-                    // After delay, add bot response
-                    setTimeout(() => {
-                        removeTypingIndicator(chatMessages);
-                        addMessage("This is a demo chatbot and doesn't actually process messages.", 'bot', chatMessages);
-                    }, 1500);
-                }
-            });
-            
-            // Enter key press
-            userInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendBtn.click();
-                }
-            });
-            
-            // Quick reply simulation
-            chatMessages.addEventListener('click', function(e) {
-                if (e.target.classList.contains('quick-reply')) {
-                    userInput.value = e.target.textContent;
-                    sendBtn.click();
-                }
-            });
+            // Initialize all chatbots
+            for (let i = 1; i <= 9; i++) {
+                const wrapper = document.getElementById(`chatbot-${i}`);
+                const toggleBtn = wrapper.querySelector('.toggle-chat');
+                const closeBtn = wrapper.querySelector('.close-btn');
+                const sendBtn = wrapper.querySelector('.send-btn');
+                const userInput = wrapper.querySelector('.message-input');
+                const chatMessages = wrapper.querySelector('.chatbot-body');
+                
+                // Toggle chat visibility
+                toggleBtn.addEventListener('click', function() {
+                    wrapper.classList.toggle('expanded');
+                });
+                
+                // Close chat
+                closeBtn.addEventListener('click', function() {
+                    wrapper.classList.remove('expanded');
+                });
+                
+                // Send button click - just for show (not functional)
+                sendBtn.addEventListener('click', function() {
+                    const message = userInput.value.trim();
+                    if (message) {
+                        // Add user message
+                        addMessage(message, 'user', chatMessages);
+                        userInput.value = '';
+                        
+                        // Show typing indicator
+                        showTypingIndicator(chatMessages);
+                        
+                        // After delay, add bot response
+                        setTimeout(() => {
+                            removeTypingIndicator(chatMessages);
+                            addMessage("This is a demo chatbot and doesn't actually process messages.", 'bot', chatMessages);
+                        }, 1500);
+                    }
+                });
+                
+                // Enter key press
+                userInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendBtn.click();
+                    }
+                });
+                
+                // Quick reply simulation
+                chatMessages.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('quick-reply')) {
+                        userInput.value = e.target.textContent;
+                        sendBtn.click();
+                    }
+                });
+            }
             
             // Add message to chat
             function addMessage(text, sender, container) {
