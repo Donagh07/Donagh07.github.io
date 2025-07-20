@@ -3,39 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Chatbot Widget Showcase</title>
+    <title>Business Chatbot Widgets</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+        :root {
+            --primary: #4a6bff;
+            --primary-dark: #3a5ad9;
+            --secondary: #ff6b6b;
+            --accent: #00b894;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border: #dee2e6;
+            --white: #ffffff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 20px;
+        }
+
         .note {
             background-color: #fff3cd;
             color: #856404;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             margin-bottom: 30px;
             text-align: center;
             border: 1px solid #ffeeba;
+            max-width: 1200px;
+            margin: 0 auto 30px;
         }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark);
+        }
+
         .widget-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
             justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .chat-widget {
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            width: 300px;
+
+        .chatbot-widget {
+            width: 380px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
         }
+
         .minimized {
             width: 60px;
             height: 60px;
@@ -44,72 +81,147 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-hover);
+            position: relative;
         }
-        .chat-header {
-            padding: 12px 15px;
-            cursor: pointer;
+
+        .minimized .chatbot-header,
+        .minimized .chatbot-body,
+        .minimized .chatbot-footer {
+            display: none;
+        }
+
+        .minimized-icon {
+            font-size: 24px;
+            color: white;
+        }
+
+        .chatbot-header {
+            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            position: relative;
             color: white;
-            font-weight: bold;
         }
-        .chat-body {
-            height: 250px;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: white;
-            flex-grow: 1;
-        }
-        .chat-footer {
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-top: 1px solid #eee;
-        }
-        .message {
-            margin-bottom: 10px;
-            padding: 8px 12px;
-            border-radius: 18px;
-            max-width: 80%;
-            word-wrap: break-word;
-        }
-        .bot-message {
-            background-color: #e5e5ea;
-            margin-right: auto;
-            border-radius: 18px 18px 18px 4px;
-        }
-        .user-message {
-            background-color: #007aff;
-            color: white;
-            margin-left: auto;
-            border-radius: 18px 18px 4px 18px;
-        }
-        .options {
+
+        .widget-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 5px;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
-        .option-btn {
-            background-color: #f0f0f0;
-            border: none;
-            border-radius: 15px;
-            padding: 5px 10px;
-            font-size: 12px;
-            cursor: default;
+
+        .header-text {
+            flex: 1;
         }
+
+        .header-text h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
         .toggle-btn {
             background: none;
             border: none;
             font-size: 16px;
             cursor: pointer;
-            color: inherit;
-        }
-        .minimized-icon {
-            font-size: 24px;
             color: white;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
+
+        .chatbot-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 250px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .bot-message {
+            background-color: var(--white);
+            color: var(--dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-reply {
+            background: var(--primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: default;
+        }
+
+        .chatbot-footer {
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            background-color: var(--white);
+            display: flex;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        /* Color themes for each widget */
+        .widget-1 { background-color: #4a6bff; }
+        .widget-2 { background-color: #ff6b6b; }
+        .widget-3 { background-color: #00b894; }
+        .widget-4 { background-color: #9c27b0; }
+        .widget-5 { background-color: #ff9800; }
+        .widget-6 { background-color: #607d8b; }
+        .widget-7 { background-color: #e91e63; }
+        .widget-8 { background-color: #3f51b5; }
+        .widget-9 { background-color: #009688; }
+        .widget-10 { background-color: #795548; }
     </style>
 </head>
 <body>
@@ -117,355 +229,290 @@
         <strong>Note:</strong> These chatbot widgets are for demonstration purposes only and are not interactive.
     </div>
     
-    <h1 style="text-align: center; margin-bottom: 30px;">Business Chatbot Widgets</h1>
+    <h1>Business Chatbot Widgets</h1>
     
     <div class="widget-container">
-        <!-- Gym Business -->
-        <div class="chat-widget" id="widget1">
-            <div class="chat-header" style="background-color: #4285F4;" onclick="toggleWidget('widget1')">
-                <span>FitPro Gym</span>
+        <!-- Widget 1 - Fitness Center -->
+        <div class="chatbot-widget" id="widget1">
+            <div class="chatbot-header widget-1" onclick="toggleWidget('widget1')">
+                <div class="widget-logo" style="background: #4a6bff;">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Elite Fitness Center</h3>
+                    <p>How can I help with your fitness journey?</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to FitPro Gym! How can we help with your fitness journey today?</div>
-                <div class="message bot-message">What are you interested in?</div>
-                <div class="options">
-                    <button class="option-btn">Membership plans</button>
-                    <button class="option-btn">Personal training</button>
-                    <button class="option-btn">Class schedule</button>
-                    <button class="option-btn">Facility tour</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Hi there! 👋 I'm your virtual assistant from Elite Fitness Center. How can I help you today?
+                </div>
+                <div class="message bot-message">
+                    You can ask me about:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Membership options</div>
+                        <div class="quick-reply">Class schedules</div>
+                        <div class="quick-reply">Personal training</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Restaurant Business -->
-        <div class="chat-widget" id="widget2">
-            <div class="chat-header" style="background-color: #34A853;" onclick="toggleWidget('widget2')">
-                <span>Bella Cucina</span>
+        <!-- Widget 2 - Restaurant -->
+        <div class="chatbot-widget" id="widget2">
+            <div class="chatbot-header widget-2" onclick="toggleWidget('widget2')">
+                <div class="widget-logo" style="background: #ff6b6b;">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Gourmet Delight</h3>
+                    <p>Hungry? Let me help with your order!</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Bella Cucina! How may we assist with your dining experience?</div>
-                <div class="options">
-                    <button class="option-btn">Reservations</button>
-                    <button class="option-btn">Today's specials</button>
-                    <button class="option-btn">Private events</button>
-                    <button class="option-btn">Menu questions</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Hello! Welcome to Gourmet Delight. How can I assist you today?
+                </div>
+                <div class="message bot-message">
+                    Here's what I can help with:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Make a reservation</div>
+                        <div class="quick-reply">Today's specials</div>
+                        <div class="quick-reply">Delivery options</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Hotel Business -->
-        <div class="chat-widget" id="widget3">
-            <div class="chat-header" style="background-color: #EA4335;" onclick="toggleWidget('widget3')">
-                <span>Grand Plaza Hotel</span>
+        <!-- Widget 3 - E-commerce -->
+        <div class="chatbot-widget minimized" id="widget3" onclick="toggleWidget('widget3')">
+            <div class="minimized-icon" style="background: #00b894;">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="chatbot-header widget-3">
+                <div class="widget-logo" style="background: #00b894;">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="header-text">
+                    <h3>TechGadgets Store</h3>
+                    <p>Ready to find your perfect gadget?</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Grand Plaza Hotel! How can we assist with your stay?</div>
-                <div class="options">
-                    <button class="option-btn">Room bookings</button>
-                    <button class="option-btn">Amenities</button>
-                    <button class="option-btn">Conference rooms</button>
-                    <button class="option-btn">Local attractions</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Hi! I'm your shopping assistant at TechGadgets. How can I help?
+                </div>
+                <div class="message bot-message">
+                    I can assist with:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Product search</div>
+                        <div class="quick-reply">Order status</div>
+                        <div class="quick-reply">Return policy</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bank Business -->
-        <div class="chat-widget minimized" id="widget4" onclick="toggleWidget('widget4')">
-            <div class="minimized-icon">$</div>
-            <div class="chat-header" style="display: none; background-color: #FBBC05; color: #202124;">
-                <span>MetroBank</span>
+        <!-- Widget 4 - Hotel -->
+        <div class="chatbot-widget minimized" id="widget4" onclick="toggleWidget('widget4')">
+            <div class="minimized-icon" style="background: #9c27b0;">
+                <i class="fas fa-hotel"></i>
+            </div>
+            <div class="chatbot-header widget-4">
+                <div class="widget-logo" style="background: #9c27b0;">
+                    <i class="fas fa-hotel"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Grand Plaza Hotel</h3>
+                    <p>How can we assist with your stay?</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to MetroBank! How can we assist with your financial needs?</div>
-                <div class="options">
-                    <button class="option-btn">Account balance</button>
-                    <button class="option-btn">Loan information</button>
-                    <button class="option-btn">Credit cards</button>
-                    <button class="option-btn">Branch locations</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Welcome to Grand Plaza Hotel! How can we make your stay more comfortable?
+                </div>
+                <div class="message bot-message">
+                    You can ask about:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Room bookings</div>
+                        <div class="quick-reply">Amenities</div>
+                        <div class="quick-reply">Local attractions</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Clinic Business -->
-        <div class="chat-widget" id="widget5">
-            <div class="chat-header" style="background-color: #673AB7;" onclick="toggleWidget('widget5')">
-                <span>Wellness Clinic</span>
+        <!-- Widget 5 - Travel Agency -->
+        <div class="chatbot-widget" id="widget5">
+            <div class="chatbot-header widget-5" onclick="toggleWidget('widget5')">
+                <div class="widget-logo" style="background: #ff9800;">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Horizon Travel</h3>
+                    <p>Let's plan your dream vacation!</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Wellness Clinic! How can we assist with your health?</div>
-                <div class="options">
-                    <button class="option-btn">Appointments</button>
-                    <button class="option-btn">Services</button>
-                    <button class="option-btn">Insurance</button>
-                    <button class="option-btn">Prescriptions</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Hello! I'm your travel consultant at Horizon Travel. Where would you like to go?
+                </div>
+                <div class="message bot-message">
+                    I can help with:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Vacation packages</div>
+                        <div class="quick-reply">Flight bookings</div>
+                        <div class="quick-reply">Travel insurance</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tech Store Business -->
-        <div class="chat-widget minimized" id="widget6" onclick="toggleWidget('widget6')">
-            <div class="minimized-icon">⌚</div>
-            <div class="chat-header" style="display: none; background-color: #607D8B;">
-                <span>Tech Haven</span>
+        <!-- Widget 6 - Bank -->
+        <div class="chatbot-widget minimized" id="widget6" onclick="toggleWidget('widget6')">
+            <div class="minimized-icon" style="background: #607d8b;">
+                <i class="fas fa-university"></i>
+            </div>
+            <div class="chatbot-header widget-6">
+                <div class="widget-logo" style="background: #607d8b;">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="header-text">
+                    <h3>MetroBank</h3>
+                    <p>How can we assist with your finances?</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Tech Haven! How can we assist with your tech needs?</div>
-                <div class="options">
-                    <button class="option-btn">Product availability</button>
-                    <button class="option-btn">Technical support</button>
-                    <button class="option-btn">Store hours</button>
-                    <button class="option-btn">Repair services</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Welcome to MetroBank's virtual assistant. How can I help you today?
+                </div>
+                <div class="message bot-message">
+                    I can provide information about:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Account balances</div>
+                        <div class="quick-reply">Loan options</div>
+                        <div class="quick-reply">Branch locations</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Law Firm Business -->
-        <div class="chat-widget" id="widget7">
-            <div class="chat-header" style="background: linear-gradient(90deg, #FF416C, #FF4B2B);" onclick="toggleWidget('widget7')">
-                <span>Justice Law Firm</span>
+        <!-- Widget 7 - Salon -->
+        <div class="chatbot-widget" id="widget7">
+            <div class="chatbot-header widget-7" onclick="toggleWidget('widget7')">
+                <div class="widget-logo" style="background: #e91e63;">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Chic Salon</h3>
+                    <p>Let's make you look fabulous!</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Justice Law Firm. How can we assist with your legal needs?</div>
-                <div class="options">
-                    <button class="option-btn">Consultation</button>
-                    <button class="option-btn">Practice areas</button>
-                    <button class="option-btn">Attorney profiles</button>
-                    <button class="option-btn">Case evaluation</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Welcome to Chic Salon! How can we help you look your best today?
+                </div>
+                <div class="message bot-message">
+                    I can assist with:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Appointments</div>
+                        <div class="quick-reply">Services</div>
+                        <div class="quick-reply">Special offers</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Fashion Boutique Business -->
-        <div class="chat-widget minimized" id="widget8" onclick="toggleWidget('widget8')">
-            <div class="minimized-icon">👗</div>
-            <div class="chat-header" style="display: none; background-color: #E91E63;">
-                <span>Chic Boutique</span>
+        <!-- Widget 8 - Law Firm -->
+        <div class="chatbot-widget minimized" id="widget8" onclick="toggleWidget('widget8')">
+            <div class="minimized-icon" style="background: #3f51b5;">
+                <i class="fas fa-gavel"></i>
+            </div>
+            <div class="chatbot-header widget-8">
+                <div class="widget-logo" style="background: #3f51b5;">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Justice Law Firm</h3>
+                    <p>How can we assist with your legal needs?</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Chic Boutique! How can we assist with your fashion needs?</div>
-                <div class="options">
-                    <button class="option-btn">New arrivals</button>
-                    <button class="option-btn">Size guide</button>
-                    <button class="option-btn">Store locations</button>
-                    <button class="option-btn">Return policy</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Welcome to Justice Law Firm. All conversations are confidential.
+                </div>
+                <div class="message bot-message">
+                    I can help with:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Consultations</div>
+                        <div class="quick-reply">Practice areas</div>
+                        <div class="quick-reply">Attorney profiles</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Pet Store Business -->
-        <div class="chat-widget" id="widget9">
-            <div class="chat-header" style="background-color: #9C27B0;" onclick="toggleWidget('widget9')">
-                <span>Pet Paradise</span>
+        <!-- Widget 9 - Medical Clinic -->
+        <div class="chatbot-widget" id="widget9">
+            <div class="chatbot-header widget-9" onclick="toggleWidget('widget9')">
+                <div class="widget-logo" style="background: #009688;">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Wellness Clinic</h3>
+                    <p>How can we assist with your health?</p>
+                </div>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Pet Paradise! How can we assist with your pet needs?</div>
-                <div class="options">
-                    <button class="option-btn">Pet supplies</button>
-                    <button class="option-btn">Grooming</button>
-                    <button class="option-btn">Adoptions</button>
-                    <button class="option-btn">Veterinary services</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Welcome to Wellness Clinic. How can we assist with your healthcare needs?
+                </div>
+                <div class="message bot-message">
+                    I can help with:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Appointments</div>
+                        <div class="quick-reply">Insurance</div>
+                        <div class="quick-reply">Services</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Real Estate Business -->
-        <div class="chat-widget minimized" id="widget10" onclick="toggleWidget('widget10')">
-            <div class="minimized-icon">🏠</div>
-            <div class="chat-header" style="display: none; background-color: #00BCD4;">
-                <span>Elite Properties</span>
-                <button class="toggle-btn">−</button>
+        <!-- Widget 10 - Real Estate -->
+        <div class="chatbot-widget minimized" id="widget10" onclick="toggleWidget('widget10')">
+            <div class="minimized-icon" style="background: #795548;">
+                <i class="fas fa-home"></i>
             </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Elite Properties! How can we assist with your real estate needs?</div>
-                <div class="options">
-                    <button class="option-btn">Property listings</button>
-                    <button class="option-btn">Home valuation</button>
-                    <button class="option-btn">Mortgage info</button>
-                    <button class="option-btn">Agent contact</button>
+            <div class="chatbot-header widget-10">
+                <div class="widget-logo" style="background: #795548;">
+                    <i class="fas fa-home"></i>
                 </div>
-            </div>
-        </div>
-
-        <!-- Movie Theater Business -->
-        <div class="chat-widget" id="widget11">
-            <div class="chat-header" style="background-color: #3F51B5;" onclick="toggleWidget('widget11')">
-                <span>Starlight Cinemas</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Starlight Cinemas! How can we assist with your movie experience?</div>
-                <div class="options">
-                    <button class="option-btn">Showtimes</button>
-                    <button class="option-btn">Ticket purchases</button>
-                    <button class="option-btn">Special events</button>
-                    <button class="option-btn">Concessions</button>
+                <div class="header-text">
+                    <h3>Elite Properties</h3>
+                    <p>Find your dream home today!</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Music Store Business -->
-        <div class="chat-widget minimized" id="widget12" onclick="toggleWidget('widget12')">
-            <div class="minimized-icon">🎵</div>
-            <div class="chat-header" style="display: none; background-color: #795548;">
-                <span>Melody Music</span>
                 <button class="toggle-btn">−</button>
             </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Melody Music! How can we assist with your musical needs?</div>
-                <div class="options">
-                    <button class="option-btn">Instrument sales</button>
-                    <button class="option-btn">Music lessons</button>
-                    <button class="option-btn">Repair services</button>
-                    <button class="option-btn">Rental program</button>
+            <div class="chatbot-body">
+                <div class="message bot-message">
+                    Welcome to Elite Properties! How can I assist with your real estate needs?
                 </div>
-            </div>
-        </div>
-
-        <!-- Game Store Business -->
-        <div class="chat-widget" id="widget13">
-            <div class="chat-header" style="background-color: #009688;" onclick="toggleWidget('widget13')">
-                <span>Game World</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Game World! How can we assist with your gaming needs?</div>
-                <div class="options">
-                    <button class="option-btn">New releases</button>
-                    <button class="option-btn">Pre-orders</button>
-                    <button class="option-btn">Gaming events</button>
-                    <button class="option-btn">Console bundles</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Book Store Business -->
-        <div class="chat-widget minimized" id="widget14" onclick="toggleWidget('widget14')">
-            <div class="minimized-icon">📚</div>
-            <div class="chat-header" style="display: none; background-color: #8BC34A;">
-                <span>Page Turner Books</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Page Turner Books! How can we assist with your reading needs?</div>
-                <div class="options">
-                    <button class="option-btn">Book search</button>
-                    <button class="option-btn">Author events</button>
-                    <button class="option-btn">Gift cards</button>
-                    <button class="option-btn">Reading clubs</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Travel Agency Business -->
-        <div class="chat-widget" id="widget15">
-            <div class="chat-header" style="background-color: #2196F3;" onclick="toggleWidget('widget15')">
-                <span>Horizon Travel</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Horizon Travel! How can we assist with your vacation plans?</div>
-                <div class="options">
-                    <button class="option-btn">Vacation packages</button>
-                    <button class="option-btn">Flight bookings</button>
-                    <button class="option-btn">Hotel reservations</button>
-                    <button class="option-btn">Travel insurance</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Car Dealership Business -->
-        <div class="chat-widget minimized" id="widget16" onclick="toggleWidget('widget16')">
-            <div class="minimized-icon">🚗</div>
-            <div class="chat-header" style="display: none; background-color: #FF5722;">
-                <span>Premier Motors</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Premier Motors! How can we assist with your vehicle needs?</div>
-                <div class="options">
-                    <button class="option-btn">New vehicles</button>
-                    <button class="option-btn">Pre-owned inventory</button>
-                    <button class="option-btn">Financing</button>
-                    <button class="option-btn">Service center</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Landscaping Business -->
-        <div class="chat-widget" id="widget17">
-            <div class="chat-header" style="background-color: #4CAF50;" onclick="toggleWidget('widget17')">
-                <span>Green Thumb Landscaping</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Green Thumb! How can we assist with your outdoor space?</div>
-                <div class="options">
-                    <button class="option-btn">Landscape design</button>
-                    <button class="option-btn">Maintenance</button>
-                    <button class="option-btn">Irrigation</button>
-                    <button class="option-btn">Hardscaping</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Daycare Business -->
-        <div class="chat-widget minimized" id="widget18" onclick="toggleWidget('widget18')">
-            <div class="minimized-icon">👶</div>
-            <div class="chat-header" style="display: none; background-color: #FF9800;">
-                <span>Little Explorers</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Little Explorers! How can we assist with your childcare needs?</div>
-                <div class="options">
-                    <button class="option-btn">Enrollment</button>
-                    <button class="option-btn">Programs</button>
-                    <button class="option-btn">Tuition</button>
-                    <button class="option-btn">Daily schedule</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Career Services Business -->
-        <div class="chat-widget" id="widget19">
-            <div class="chat-header" style="background-color: #9E9E9E;" onclick="toggleWidget('widget19')">
-                <span>Career Boost</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body">
-                <div class="message bot-message">Welcome to Career Boost! How can we assist with your professional growth?</div>
-                <div class="options">
-                    <button class="option-btn">Resume services</button>
-                    <button class="option-btn">Interview coaching</button>
-                    <button class="option-btn">Job search</button>
-                    <button class="option-btn">Career counseling</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Wedding Planning Business -->
-        <div class="chat-widget minimized" id="widget20" onclick="toggleWidget('widget20')">
-            <div class="minimized-icon">💍</div>
-            <div class="chat-header" style="display: none; background-color: #E91E63;">
-                <span>Dream Weddings</span>
-                <button class="toggle-btn">−</button>
-            </div>
-            <div class="chat-body" style="display: none;">
-                <div class="message bot-message">Welcome to Dream Weddings! How can we assist with your special day?</div>
-                <div class="options">
-                    <button class="option-btn">Venue selection</button>
-                    <button class="option-btn">Vendor referrals</button>
-                    <button class="option-btn">Planning packages</button>
-                    <button class="option-btn">Budget planning</button>
+                <div class="message bot-message">
+                    I can help you:
+                    <div class="quick-replies">
+                        <div class="quick-reply">Search properties</div>
+                        <div class="quick-reply">Schedule viewings</div>
+                        <div class="quick-reply">Get home valuations</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -477,28 +524,17 @@
             const widget = document.getElementById(widgetId);
             widget.classList.toggle('minimized');
             
-            const header = widget.querySelector('.chat-header');
-            const body = widget.querySelector('.chat-body');
             const btn = widget.querySelector('.toggle-btn');
-            const icon = widget.querySelector('.minimized-icon');
-            
             if (widget.classList.contains('minimized')) {
-                if (header) header.style.display = 'none';
-                if (body) body.style.display = 'none';
-                if (btn) btn.textContent = '+';
-                if (icon) icon.style.display = 'block';
+                btn.textContent = '+';
             } else {
-                if (header) header.style.display = 'flex';
-                if (body) body.style.display = 'block';
-                if (btn) btn.textContent = '−';
-                if (icon) icon.style.display = 'none';
+                btn.textContent = '−';
             }
         }
 
         // Initialize some widgets as minimized
         document.addEventListener('DOMContentLoaded', function() {
-            const widgetsToMinimize = ['widget4', 'widget6', 'widget8', 'widget10', 'widget12', 
-                                      'widget14', 'widget16', 'widget18', 'widget20'];
+            const widgetsToMinimize = ['widget3', 'widget4', 'widget6', 'widget8', 'widget10'];
             
             widgetsToMinimize.forEach(id => {
                 const widget = document.getElementById(id);
